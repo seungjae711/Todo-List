@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import Todo from "./Todo";
 import NewTodoForm from  "./NewTodoForm"
+import "./TodoList.css"
 
 class TodoList extends Component {
     constructor(props) {
         super(props);
         this.state = { todos: []};
     }
-
 
     handleCreateTodo = (NewTodo) => {
         this.setState({
@@ -29,7 +29,16 @@ class TodoList extends Component {
             return todo;
         });
         this.setState({ todos: updatedTodos })
-        console.log(this.state.todos)
+    }
+
+    handleComplete = (id) => {
+        const updatedTodos = this.state.todos.map(todo => {
+            if(todo.id === id) {
+                return {...todo, completed: !todo.completed};
+            }
+            return todo;
+        });
+        this.setState({ todos: updatedTodos })    
     }
 
     render() {
@@ -38,8 +47,10 @@ class TodoList extends Component {
                 key = {todo.id} 
                 id = {todo.id } 
                 task = {todo.task} 
+                completed = {todo.completed}
                 removeTodo = {this.handleRemove} 
                 updateTodo = {this.handleUpdate}
+                completeTodo = {this.handleComplete}
             />
         ))
 
@@ -47,14 +58,16 @@ class TodoList extends Component {
         //     return <Todo task = {todo.task} />
         // })
 
-
         return (
-            <div>
-                <h1>Todo List</h1>
-                <NewTodoForm createNewTodo={this.handleCreateTodo}/>
+            <div className="TodoList">
+                <h1>
+                    Todo List! <span>A simple React Todo List App.</span>
+                </h1>
+ 
                 <ul>
                     {todos}
                 </ul>
+                <NewTodoForm createNewTodo={this.handleCreateTodo}/>
             </div>
         );
     }

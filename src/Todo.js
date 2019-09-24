@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import "./Todo.css"
 
 class Todo extends Component {
     constructor(props) {
@@ -30,20 +31,22 @@ class Todo extends Component {
         //take new task data and pass up to parent
         this.props.updateTodo(this.props.id,  this.state.task);
         this.setState({ isEditting: false });
-
     }
 
+    handleComplete = (evt) => {
+        this.props.completeTodo(this.props.id)
+    }
     render() {
         let result;
         if (this.state.isEditting) {
             result = (
-                <div>
-                    <form onSubmit={this.handleUpdate}>
+                <div className="Todo">
+                    <form className= "Todo-edit-form" onSubmit = { this.handleUpdate }>
                         <input 
-                            type="text"
-                            value={this.state.task} 
-                            name="task"
-                            onChange={this.handleChange}
+                            type = "text"
+                            value = { this.state.task } 
+                            name = "task"
+                            onChange = { this.handleChange }
                         />
                         <button>Save</button>
                     </form>
@@ -51,10 +54,18 @@ class Todo extends Component {
             )
         }else {
             result = (
-                <div>
-                    <button onClick = {this.handleEdit}>Edit</button>
-                    <button onClick = {this.handleRemove}>X</button>
-                    <li>{this.props.task}</li>
+                <div className = "Todo">
+                    <li className={this.props.completed ? "Todo-task completed" : "Todo-task"} onClick = {this.handleComplete}>
+                        {this.props.task}
+                    </li>
+                    <div className='Todo-buttons'>
+                        <button onClick = {this.handleEdit}>
+                            {/* <i calss='fas fa-pen'/> */}Edit
+                        </button>
+                        <button onClick = {this.handleRemove}>
+                            {/* <i calss='fas fa-trash'/> */}X
+                        </button>
+                    </div>
                 </div>
             )
         }
